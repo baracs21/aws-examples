@@ -1,0 +1,18 @@
+[submodule "aws-session-manager-ssh-ecs"]
+	path = aws-session-manager-ssh-ecs
+	url = git@github.com:baracs21/aws-session-manager-ssh-ecs.git
+[submodule "aws-sns-sqs-monitoring"]
+	path = aws-sns-sqs-monitoring
+	url = git@github.com:baracs21/aws-sns-sqs-monitoring.git
+[submodule "aws-bootstrap-account"]
+	path = aws-bootstrap-account
+	url = git@github.com:baracs21/aws-bootstrap-account.git
+[submodule "aws-account-setup"]
+	path = aws-account-setup
+	url = git@github.com:baracs21/aws-account-setup.git
+[submodule "aws-project-template"]
+	path = aws-project-template
+	url = git@github.com:baracs21/aws-project-template.git
+[submodule "cdk-base"]
+	path = cdk-base
+	url = git@github.com:baracs21/cdk-base.git
