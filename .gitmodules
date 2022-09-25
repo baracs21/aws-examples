@@ -16,3 +16,6 @@
 [submodule "cdk-base"]
 	path = cdk-base
 	url = git@github.com:baracs21/cdk-base.git
+[submodule "aws-nuke-account"]
+	path = aws-nuke-account
+	url = git@github.com:baracs21/aws-nuke-account.git
