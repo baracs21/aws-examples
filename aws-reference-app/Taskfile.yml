@@ -1,0 +1,47 @@
+# https://taskfile.dev
+
+version: '3'
+
+env:
+  ROOT_DIR:
+    sh: pwd
+
+tasks:
+  bootstrap:
+    dir: infrastructure
+    cmds:
+      - cdk bootstrap
+    silent: true
+
+  set-pipeline:
+    dir: infrastructure
+    cmds:
+      - cdk deploy PipelineStack --require-approval never
+    silent: true
+
+  build:
+    deps:
+      - build-templates
+      - build-functions
+    silent: true
+
+  build-functions:
+    dir: src/functions
+    cmds:
+      -  ./build-functions.sh {{.ROOT_DIR}}
+    silent: true
+
+  build-templates:
+    dir: infrastructure
+    cmds:
+      - rm -rf cdk.out
+      - npm ci
+      - npm run build
+      - npx cdk synth
+    silent: true
+
+  destroy:
+    dir: infrastructure
+    cmds:
+      - cdk destroy --force
+    silent: true
