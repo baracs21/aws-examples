@@ -1,0 +1,82 @@
+# https://taskfile.dev
+
+version: '3'
+
+vars:
+  AWS_ACCOUNT:
+    sh: echo $AWS_ACCOUNT_ID
+  AWS_PROFILE:
+    sh: echo $AWS_PROFILE
+  AWS_REGION:
+    sh: echo $AWS_REGION
+  ACTIONS_FILE_PATH:
+    sh: echo $PWD/actions
+
+includes:
+  nuke:
+    taskfile: ./cdk-base/nuke-account/Taskfile.yaml
+    dir: ./cdk-base/nuke-account
+  bootstrap:
+    taskfile: ./cdk-base/bootstrap/Taskfile.yaml
+    dir: ./cdk-base/bootstrap
+  common:
+    taskfile: ./cdk-base/common/Taskfile.yaml
+
+tasks:
+  default:
+    deps: [ build-functions ]
+    cmds:
+      - task common:build
+    silent: true
+
+  deploy:
+    deps: [ build-functions ]
+    cmds:
+      - task common:deploy
+    silent: true
+
+  start-test-env:
+    dir: ./src/test-environment/localstack
+    cmds:
+      - ./createLocalEnv.sh sqs
+    silent: true
+
+  build-functions:
+    deps:
+      - start-test-env
+    cmds:
+      - ./src/functions/build.sh
+    silent: true
+
+  send-messages:
+    dir: ./scripts
+    desc: "sends 50 unprocessable and 50 processable messages to the example queue"
+    cmds:
+      - ./send-messages.sh
+    silent: true
+
+  approximate-number-of-messages:
+    desc: "will observe the approximate number of messages inside the queues"
+    dir: ./scripts
+    cmds:
+      - watch ./get-messages-from-queue.sh
+    silent: true
+
+  fix-consumer-function:
+    desc: "will fix the consumer function"
+    cmds:
+      - sed -i 's#"fail"#"fixed"#g' src/functions/handler/message-consumer/message-consumer.go
+      - task deploy
+    silent: true
+
+  docs:
+    dir: ./docs
+    cmds:
+      - drawio -x -f png -o arc.png arc.drawio
+    silent: true
+
+  update-recursive:
+    cmds:
+      - git pull --recurse-submodules
+    silent: true
+

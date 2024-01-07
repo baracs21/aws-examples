@@ -1,0 +1,8 @@
+cloudformation:*
+ssm:*
+iam:*
+sts:*
+sqs:*
+lambda:*
+s3:*
+events:*
