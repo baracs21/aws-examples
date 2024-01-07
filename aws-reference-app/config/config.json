@@ -1,0 +1,27 @@
+{
+  "app-name": "aws-reference-app",
+  "github-repo": {
+    "owner": "baracs21",
+    "name": "aws-reference-app",
+    "branch": "main",
+    "codestar-connection-arn": "arn:aws:codestar-connections:eu-west-1:281144338244:connection/4c1d93b9-0180-43ad-bc08-bdf4de713684"
+  },
+  "pipeline": {
+    "name": "res",
+    "accountId": "281144338244"
+  },
+  "stages": [
+    {
+      "name": "dev",
+      "accountId": "281144338244",
+      "isProductionStage": false,
+      "isActive": true
+    },
+    {
+      "name": "prod",
+      "accountId": "281144338244",
+      "isProductionStage": true,
+      "isActive": false
+    }
+  ]
+}

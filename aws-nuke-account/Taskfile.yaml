@@ -1,0 +1,27 @@
+# https://taskfile.dev
+
+version: '3'
+
+vars:
+  AWS_ACCOUNT:
+    sh: echo $AWS_ACCOUNT_ID
+  AWS_PROFILE:
+    sh: echo $AWS_PROFILE
+  AWS_ALIAS:
+    sh: echo $AWS_ALIAS
+
+tasks:
+
+  install-aws-nuke:
+    desc: install aws nuke tool
+    dir: ./scripts
+    cmds:
+      - ./install-aws-nuke.sh
+    silent: true
+
+  nuke-aws-account:
+    desc: nuke the aws account
+    dir: ./scripts
+    cmds:
+      - ./nuke-aws-account.sh {{.AWS_ACCOUNT}} {{.AWS_PROFILE}} {{.AWS_ALIAS}}
+    silent: true

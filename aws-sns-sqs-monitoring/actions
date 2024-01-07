@@ -1,0 +1,9 @@
+cloudformation:*
+ssm:*
+vpc:*
+ec2:*
+iam:*
+sns:*
+sqs:*
+lambda:*
+s3:*

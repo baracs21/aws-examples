@@ -1,0 +1,36 @@
+# https://taskfile.dev
+
+version: '3'
+
+vars:
+  AWS_ACCOUNT:
+    sh: echo $AWS_ACCOUNT_ID
+  AWS_PROFILE:
+    sh: echo $AWS_PROFILE
+  AWS_REGION:
+    sh: echo $AWS_REGION
+
+tasks:
+
+  create-cdk-policy:
+    desc: create the cdk policy with least privileges (configure actions.txt before!!!)
+    dir: ./scripts
+    cmds:
+      - ./create-policy.sh {{.AWS_ACCOUNT}} {{.AWS_PROFILE}}
+    silent: true
+
+  bootstrap-main-account:
+    desc: bootstrap your main account
+    deps: [ create-cdk-policy ]
+    dir: ./scripts
+    cmds:
+      - ./bootstrap-main-account.sh {{.AWS_ACCOUNT}} {{.AWS_REGION}} {{.AWS_PROFILE}}
+    silent: true
+
+  bootstrap-stage-accounts:
+    desc: bootstrap your stage account
+    deps: [ bootstrap-main-account ]
+    dir: ./scripts
+    cmds:
+      - ./bootstrap-stage-accounts.sh {{.AWS_ACCOUNT}}
+    silent: true

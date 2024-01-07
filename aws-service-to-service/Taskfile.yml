@@ -1,0 +1,45 @@
+# https://taskfile.dev
+
+version: '3'
+
+env:
+  ROOT_DIR:
+    sh: pwd
+
+tasks:
+  bootstrap:
+    dir: infrastructure/cdk
+    cmds:
+      - cdk bootstrap
+    silent: true
+
+  build:
+    deps:
+      - build-templates
+    silent: true
+
+  build-templates:
+    dir: infrastructure/cdk
+    cmds:
+      - rm -rf cdk.out
+      - npm ci
+      - npm run build
+      - npx cdk synth
+    silent: true
+
+  destroy:
+    dir: infrastructure/cdk
+    cmds:
+      #      - cdk destroy CloudMapStack --force
+      - cdk destroy CloudMapServiceConnectStack --force
+      - cdk destroy CoreStack --force
+    silent: true
+
+  deploy:
+    dir: infrastructure/cdk
+    cmds:
+      - cdk deploy CoreStack --require-approval never
+      #      - cdk deploy CloudMapStack --require-approval never
+      #      - cdk deploy CloudMapPublicDnsStack --require-approval never
+      - cdk deploy CloudMapServiceConnectStack --require-approval never
+    silent: true
